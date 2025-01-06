@@ -14,6 +14,7 @@ class LatLngRecord(pydantic.BaseModel):
 
 
 class ExifRecord(pydantic.BaseModel):
+    Make: str  # Canon
     Model: str  # Canon EOS 6D
     ExposureTime: float  # 0.03333333333
     FNumber: float  # 3.2
@@ -33,6 +34,7 @@ class ExifRecord(pydantic.BaseModel):
     @classmethod
     def from_picture_metadata(cls, picture: dict) -> "ExifRecord":
         return cls(
+            Make=picture["camera"]["name"].split(" ")[0],
             Model=picture["camera"]["name"],
             ExposureTime=get_shutter_speed(picture),
             FNumber=get_aperture(picture["aperture"]),
